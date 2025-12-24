@@ -35,10 +35,34 @@
 
     .hint {
       position: absolute;
-      bottom: 130px;
+      bottom: 180px; /* 调整位置，给新按钮留空间 */
       width: 100%;
       text-align: center;
       color: #555;
+      font-size: 16px;
+      z-index: 10;
+    }
+
+    /* 新增：等级称号样式 */
+    .level-title {
+      position: absolute;
+      top: 90px;
+      width: 100%;
+      text-align: center;
+      color: #ff9800;
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    /* 新增：最高分显示 */
+    .high-score {
+      position: absolute;
+      top: 120px;
+      width: 100%;
+      text-align: center;
+      color: #795548;
       font-size: 16px;
       z-index: 10;
     }
@@ -59,6 +83,12 @@
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 5;
       animation: floatBalloon 3s ease-in-out infinite;
+    }
+
+    /* 新增：气球大小随机化兼容 */
+    .balloon.random-size {
+      width: var(--size-w);
+      height: var(--size-h);
     }
 
     .balloon.gold {
@@ -94,7 +124,25 @@
       z-index: 30;
     }
 
-    /* 新增：反向气球样式 */
+    /* 新增：冰冻气球样式 */
+    .balloon.frozen {
+      background: 
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), transparent 45%),
+        var(--color);
+      box-shadow: 
+        inset -10px -10px 25px rgba(0,0,0,0.12),
+        inset 8px 8px 15px rgba(255,255,255,0.3),
+        0 0 20px rgba(100, 200, 255, 0.8);
+      animation: floatBalloon 4s ease-in-out infinite, freezeGlow 1.5s infinite alternate;
+      border: 2px solid #81d4fa;
+    }
+
+    @keyframes freezeGlow {
+      from { box-shadow: 0 0 20px rgba(100, 200, 255, 0.8); }
+      to { box-shadow: 0 0 30px rgba(100, 200, 255, 1), 0 0 40px rgba(100, 200, 255, 0.8); }
+    }
+
+    /* 反向气球样式 */
     .balloon.reverse {
       background: 
         radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), transparent 45%),
@@ -106,7 +154,7 @@
       animation: floatReverseBalloon 3s ease-in-out infinite;
     }
 
-    /* 新增：变色气球样式 */
+    /* 变色气球样式 */
     .balloon.rainbow {
       background: 
         radial-gradient(circle at 35% 30%, rgba(255,255,255,0.9), transparent 45%),
@@ -118,7 +166,7 @@
       animation: floatBalloon 3s ease-in-out infinite, rainbowGlow 2s linear infinite;
     }
 
-    /* 新增：分数翻倍道具样式 */
+    /* 分数翻倍道具样式 */
     .double-score {
       position: absolute;
       width: 50px;
@@ -137,7 +185,7 @@
       animation: floatScore 2s ease-in-out infinite;
     }
 
-    /* 新增：双倍分数提示 */
+    /* 双倍分数提示 */
     .double-score-active {
       position: fixed;
       top: 100px;
@@ -152,6 +200,55 @@
       box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
       z-index: 100;
       animation: pulseScore 1s infinite alternate;
+    }
+
+    /* 新增：解压文字气泡样式 */
+    .pop-text {
+      position: absolute;
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      pointer-events: none;
+      z-index: 1001;
+      animation: popTextFloat 1s forwards;
+    }
+
+    @keyframes popTextFloat {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -100%) scale(1.5); }
+    }
+
+    /* 新增：连击超神特效 */
+    .combo-super {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      font-weight: bold;
+      color: #ffeb3b;
+      text-shadow: 0 0 20px #ff9800, 0 0 40px #ff5722;
+      pointer-events: none;
+      z-index: 2000;
+      animation: superCombo 1.5s forwards;
+    }
+
+    @keyframes superCombo {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    /* 新增：天气特效粒子 */
+    .weather-particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.8;
     }
 
     @keyframes bombGlow {
@@ -174,26 +271,26 @@
       50% { transform: translateY(-8px); }
     }
 
-    /* 新增：反向气球动画 */
+    /* 反向气球动画 */
     @keyframes floatReverseBalloon {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(8px); }
     }
 
-    /* 新增：变色气球发光动画 */
+    /* 变色气球发光动画 */
     @keyframes rainbowGlow {
       0% { box-shadow: 0 0 20px rgba(255, 105, 180, 0.8); }
       50% { box-shadow: 0 0 30px rgba(105, 255, 180, 0.8); }
       100% { box-shadow: 0 0 20px rgba(105, 180, 255, 0.8); }
     }
 
-    /* 新增：分数道具漂浮动画 */
+    /* 分数道具漂浮动画 */
     @keyframes floatScore {
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-10px) rotate(5deg); }
     }
 
-    /* 新增：双倍分数提示动画 */
+    /* 双倍分数提示动画 */
     @keyframes pulseScore {
       from { transform: translateX(-50%) scale(1); }
       to { transform: translateX(-50%) scale(1.1); }
@@ -288,6 +385,13 @@
       z-index: 100;
     }
 
+    /* 新增：一键清屏按钮 */
+    #clearAllBtn {
+      background: linear-gradient(135deg, #ff5722, #e64a19);
+      color: white;
+      bottom: 230px;
+    }
+
     .control-btn:hover {
       transform: scale(1.12);
       box-shadow: 0 6px 16px rgba(0,0,0,0.4);
@@ -360,21 +464,37 @@
       font-weight: bold;
       text-shadow: 0 0 10px black;
     }
+
+    /* 新增：黏连气球连线样式 */
+    .balloon-connector {
+      position: absolute;
+      background: rgba(255,255,255,0.6);
+      height: 2px;
+      z-index: 4;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
 
   <div class="title">💥 捏爆气球 · 释放压力 💥</div>
   <div class="counter">已捏爆：<span id="count">0</span> 个</div>
+  <!-- 新增：等级称号 -->
+  <div class="level-title" id="levelTitle">🌀 解压新手</div>
+  <!-- 新增：最高分显示 -->
+  <div class="high-score">最高分：<span id="highScore">0</span> 个</div>
+  
   <div class="hint">
     点击任意位置生成气球，再点气球把它捏爆！<br>
     快速连按【66】召唤气球雨 🎈 | 按【P】暂停时间 ⏸️<br>
-    【Shift + B】召唤超级炸弹 💣 | 反向气球🎈/变色气球🌈/双倍分数💥随机出现
+    【Shift + B】召唤超级炸弹 💣 | 反向气球🎈/变色气球🌈/双倍分数💥/冰冻气球❄️随机出现
   </div>
 
   <button id="autoExplodeBtn" class="control-btn off">AUTO</button>
   <button id="easterEggBtn" class="control-btn">❤️</button>
   <button id="bgmBtn" class="control-btn">🎵</button>
+  <!-- 新增：一键清屏按钮 -->
+  <button id="clearAllBtn" class="control-btn">🧹</button>
 
   <div id="pauseOverlay">⏸️ 时间暂停</div>
 
@@ -388,9 +508,16 @@
   <audio id="bombSound" preload="auto">
     <source src="https://www.soundjay.com/misc/sounds/explosion-02.mp3" type="audio/mpeg">
   </audio>
-  <!-- 新增：分数道具音效 -->
   <audio id="scoreSound" preload="auto">
     <source src="https://www.soundjay.com/coins/coin-07.mp3" type="audio/mpeg">
+  </audio>
+  <!-- 新增：连击超神音效 -->
+  <audio id="superComboSound" preload="auto">
+    <source src="https://www.soundjay.com/game/sounds/power-up-04.mp3" type="audio/mpeg">
+  </audio>
+  <!-- 新增：冰冻气球音效 -->
+  <audio id="frozenSound" preload="auto">
+    <source src="https://www.soundjay.com/ambient/sounds/wind-chime-01.mp3" type="audio/mpeg">
   </audio>
   <audio id="bgm" loop preload="auto">
     <source src="https://www.soundjay.com/misc/slow-bgm.mp3" type="audio/mpeg">
@@ -409,8 +536,10 @@
     const popSound = document.getElementById('popSound');
     const goldSound = document.getElementById('goldSound');
     const bombSound = document.getElementById('bombSound');
-    // 新增：分数道具音效引用
     const scoreSound = document.getElementById('scoreSound');
+    // 新增：音效引用
+    const superComboSound = document.getElementById('superComboSound');
+    const frozenSound = document.getElementById('frozenSound');
     const bgm = document.getElementById('bgm');
     let audioUnlocked = false;
     let isBgmPlaying = false;
@@ -424,29 +553,47 @@
     let idleTimer = null;
     let angryBalloon = null;
 
-    // === 66 快捷键 ===
+    // 66 快捷键
     let lastSixPress = 0;
     const SIX_INTERVAL = 500;
     let rainCount = 0;
 
-    // === 新增：时间暂停 ===
+    // 时间暂停
     let isPaused = false;
     const pauseOverlay = document.getElementById('pauseOverlay');
 
-    // === 新增：炸弹使用记录 ===
+    // 炸弹使用记录
     let usedBomb = false;
 
-    // 新增：双倍分数相关变量
+    // 双倍分数相关变量
     let isDoubleScoreActive = false;
     let doubleScoreTimer = null;
     const DOUBLE_SCORE_DURATION = 8000; // 双倍分数持续8秒
 
-    // 所有活动气球引用（用于暂停/炸弹）
+    // 所有活动气球引用（用于暂停/炸弹/清屏）
     const activeBalloons = new Set();
-    // 新增：所有变色气球引用
     const rainbowBalloons = new Set();
-    // 新增：所有反向气球引用
     const reverseBalloons = new Set();
+    // 新增：冰冻气球集合
+    const frozenBalloons = new Set();
+    // 新增：黏连气球映射
+    const connectedBalloons = new Map();
+
+    // 新增：等级系统配置
+    const levelConfig = [
+      { score: 0, title: '🌀 解压新手' },
+      { score: 20, title: '✨ 气球爱好者' },
+      { score: 50, title: '🏆 爆破专家' },
+      { score: 100, title: '🔥 气球终结者' },
+      { score: 200, title: '💥 解压大师' },
+      { score: 500, title: '👑 气球之神' }
+    ];
+    const levelTitleEl = document.getElementById('levelTitle');
+    
+    // 新增：最高分相关
+    const highScoreEl = document.getElementById('highScore');
+    let highScore = parseInt(localStorage.getItem('balloonHighScore')) || 0;
+    highScoreEl.textContent = highScore;
 
     // AUTO 按钮
     const autoBtn = document.getElementById('autoExplodeBtn');
@@ -457,10 +604,34 @@
       autoBtn.textContent = autoMode ? 'ON' : 'AUTO';
     });
 
+    // 新增：一键清屏按钮
+    const clearAllBtn = document.getElementById('clearAllBtn');
+    clearAllBtn.addEventListener('click', () => {
+      if (audioUnlocked) {
+        bombSound.currentTime = 0;
+        bombSound.play().catch(e => {});
+      }
+      // 爆炸所有气球
+      activeBalloons.forEach(balloon => {
+        if (balloon.parentNode) {
+          const rect = balloon.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const color = getComputedStyle(balloon).getPropertyValue('--color').trim() || '#ff5252';
+          popBalloon(balloon, cx, cy, color, balloon.classList.contains('gold'));
+        }
+      });
+      // 清除黏连连线
+      document.querySelectorAll('.balloon-connector').forEach(el => el.remove());
+      connectedBalloons.clear();
+      // 显示成就
+      showAchievement('🧹 一键清屏', '释放所有压力！');
+    });
+
     // 解锁音频
     function unlockAudio() {
       if (!audioUnlocked) {
-        [popSound, goldSound, bombSound, scoreSound, bgm].forEach(audio => {
+        [popSound, goldSound, bombSound, scoreSound, superComboSound, frozenSound, bgm].forEach(audio => {
           audio.volume = 0.01;
           audio.play().then(() => {
             audio.pause();
@@ -482,6 +653,147 @@
       setTimeout(() => el.remove(), 1200);
     }
 
+    // 新增：显示连击超神特效
+    function showSuperComboEffect() {
+      const el = document.createElement('div');
+      el.className = 'combo-super';
+      el.textContent = '🔥 超神！';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+      
+      if (audioUnlocked) {
+        superComboSound.currentTime = 0;
+        superComboSound.play().catch(e => {});
+      }
+      
+      // 额外加5分
+      popCount += 5;
+      countEl.textContent = popCount;
+      updateLevel();
+      updateHighScore();
+    }
+
+    // 新增：显示解压文字气泡
+    function showPopText(x, y) {
+      const texts = ['爽！', '解压！', '舒服！', '💥', '✌️', '😜', '😎', '🔥'];
+      const randomText = texts[Math.floor(Math.random() * texts.length)];
+      
+      const el = document.createElement('div');
+      el.className = 'pop-text';
+      el.textContent = randomText;
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+
+    // 新增：震动反馈函数
+    function triggerVibration() {
+      // 移动端震动
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+      // 桌面端模拟震动（页面轻微晃动）
+      document.body.style.transition = 'transform 0.1s';
+      document.body.style.transform = 'translateX(2px) translateY(1px)';
+      setTimeout(() => {
+        document.body.style.transform = 'translateX(0) translateY(0)';
+      }, 100);
+    }
+
+    // 新增：更新等级称号
+    function updateLevel() {
+      let currentLevel = levelConfig[0];
+      for (let level of levelConfig) {
+        if (popCount >= level.score) {
+          currentLevel = level;
+        }
+      }
+      levelTitleEl.textContent = currentLevel.title;
+    }
+
+    // 新增：更新最高分
+    function updateHighScore() {
+      if (popCount > highScore) {
+        highScore = popCount;
+        localStorage.setItem('balloonHighScore', highScore);
+        highScoreEl.textContent = highScore;
+      }
+    }
+
+    // 新增：生成天气特效
+    function createWeatherEffect() {
+      const weatherTypes = ['snow', 'star', 'heart'];
+      const weatherType = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+      
+      // 随机位置
+      const x = Math.random() * window.innerWidth;
+      const y = -20;
+      
+      const particle = document.createElement('div');
+      particle.className = 'weather-particle';
+      
+      // 根据天气类型设置样式
+      if (weatherType === 'snow') {
+        particle.style.background = 'white';
+        particle.style.width = '8px';
+        particle.style.height = '8px';
+        particle.style.borderRadius = '50%';
+      } else if (weatherType === 'star') {
+        particle.style.background = '#ffeb3b';
+        particle.style.width = '6px';
+        particle.style.height = '6px';
+        particle.style.borderRadius = '50%';
+        particle.style.boxShadow = '0 0 8px #ffeb3b';
+      } else if (weatherType === 'heart') {
+        particle.style.background = '#ff4081';
+        particle.style.width = '7px';
+        particle.style.height = '7px';
+        particle.style.borderRadius = '50% 0 50% 50%';
+        particle.style.transform = 'rotate(45deg)';
+      }
+      
+      particle.style.left = x + 'px';
+      particle.style.top = y + 'px';
+      document.body.appendChild(particle);
+      
+      // 飘落动画
+      let posY = y;
+      let posX = x;
+      const speed = 1 + Math.random() * 2;
+      const drift = (Math.random() - 0.5) * 0.5;
+      
+      const fall = () => {
+        if (isPaused) {
+          requestAnimationFrame(fall);
+          return;
+        }
+        
+        posY += speed;
+        posX += drift;
+        
+        particle.style.top = posY + 'px';
+        particle.style.left = posX + 'px';
+        
+        // 移出屏幕则移除
+        if (posY > window.innerHeight + 20) {
+          particle.remove();
+          return;
+        }
+        
+        requestAnimationFrame(fall);
+      };
+      
+      fall();
+      
+      // 10秒后强制移除
+      setTimeout(() => {
+        if (particle.parentNode) {
+          particle.remove();
+        }
+      }, 10000);
+    }
+
     function showAchievement(title, subtitle = '') {
       if (document.querySelector('.achievement')) return;
       const ach = document.createElement('div');
@@ -491,9 +803,8 @@
       setTimeout(() => ach.remove(), 3000);
     }
 
-    // 新增：显示双倍分数提示
+    // 显示双倍分数提示
     function showDoubleScoreHint() {
-      // 移除已存在的提示
       const existingHint = document.querySelector('.double-score-active');
       if (existingHint) existingHint.remove();
       
@@ -502,7 +813,6 @@
       hint.textContent = '✨ 双倍分数！剩余: 8秒';
       document.body.appendChild(hint);
       
-      // 倒计时更新
       let remainingTime = 8;
       const timer = setInterval(() => {
         remainingTime--;
@@ -515,9 +825,8 @@
       }, 1000);
     }
 
-    // 新增：创建分数翻倍道具
+    // 创建分数翻倍道具
     function createDoubleScoreItem() {
-      // 随机位置
       const x = 100 + Math.random() * (window.innerWidth - 200);
       const y = 100 + Math.random() * (window.innerHeight - 200);
       
@@ -527,7 +836,6 @@
       scoreItem.style.left = (x - 25) + 'px';
       scoreItem.style.top = (y - 25) + 'px';
       
-      // 点击触发双倍分数
       scoreItem.addEventListener('click', (e) => {
         e.stopPropagation();
         if (audioUnlocked) {
@@ -535,30 +843,24 @@
           scoreSound.play().catch(e => {});
         }
         
-        // 激活双倍分数
         isDoubleScoreActive = true;
         showDoubleScoreHint();
         
-        // 清除之前的定时器
         if (doubleScoreTimer) clearTimeout(doubleScoreTimer);
         
-        // 设置过期时间
         doubleScoreTimer = setTimeout(() => {
           isDoubleScoreActive = false;
           const hint = document.querySelector('.double-score-active');
           if (hint) hint.remove();
         }, DOUBLE_SCORE_DURATION);
         
-        // 移除道具
         scoreItem.remove();
         
-        // 显示成就
         showAchievement('💥 分数翻倍！', '接下来8秒捏爆气球获得双倍分数');
       });
       
       document.body.appendChild(scoreItem);
       
-      // 15秒后自动消失
       setTimeout(() => {
         if (scoreItem.parentNode) {
           scoreItem.style.opacity = '0';
@@ -568,12 +870,49 @@
       }, 15000);
     }
 
-    // 创建气球（增强版）
+    // 新增：创建黏连气球连线
+    function createConnector(balloon1, balloon2) {
+      const connector = document.createElement('div');
+      connector.className = 'balloon-connector';
+      document.body.appendChild(connector);
+      
+      // 更新连线位置
+      const updateConnector = () => {
+        if (isPaused || !balloon1.parentNode || !balloon2.parentNode) return;
+        
+        const rect1 = balloon1.getBoundingClientRect();
+        const rect2 = balloon2.getBoundingClientRect();
+        
+        const x1 = rect1.left + rect1.width / 2;
+        const y1 = rect1.top + rect1.height / 2;
+        const x2 = rect2.left + rect2.width / 2;
+        const y2 = rect2.top + rect2.height / 2;
+        
+        // 计算连线角度和长度
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const length = Math.sqrt(dx * dx + dy * dy);
+        const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+        
+        connector.style.width = length + 'px';
+        connector.style.left = x1 + 'px';
+        connector.style.top = y1 + 'px';
+        connector.style.transform = `rotate(${angle}deg)`;
+        
+        requestAnimationFrame(updateConnector);
+      };
+      
+      updateConnector();
+      return connector;
+    }
+
+    // 创建气球（增强版，包含新增功能）
     function createBalloon(x, y, color = null, isGold = false, isAngry = false, isMini = false, autoExplodeDelay = null, isBomb = false) {
-      // 随机决定是否生成反向气球（15%概率）
+      // 随机决定特殊气球类型
       const isReverse = !isGold && !isAngry && !isBomb && Math.random() < 0.15;
-      // 随机决定是否生成变色气球（10%概率）
       const isRainbow = !isGold && !isAngry && !isBomb && !isReverse && Math.random() < 0.1;
+      // 新增：冰冻气球（8%概率）
+      const isFrozen = !isGold && !isAngry && !isBomb && !isReverse && !isRainbow && Math.random() < 0.08;
       
       const balloon = document.createElement('div');
       balloon.className = 'balloon' +
@@ -582,23 +921,34 @@
         (isMini ? ' mini-balloon' : '') +
         (isBomb ? ' bomb' : '') +
         (isReverse ? ' reverse' : '') +
-        (isRainbow ? ' rainbow' : '');
+        (isRainbow ? ' rainbow' : '') +
+        (isFrozen ? ' frozen' : '');
       
-      const c = color || (isGold ? 'gold' : isAngry ? '#d32f2f' : isBomb ? '#ff1744' : colors[Math.floor(Math.random() * colors.length)]);
+      // 新增：气球大小随机化
+      let sizeW = 64, sizeH = 80;
+      if (!isMini && !isBomb && Math.random() < 0.7) {
+        sizeW = 40 + Math.random() * 60; // 40-100px宽
+        sizeH = 50 + Math.random() * 80; // 50-130px高
+        balloon.classList.add('random-size');
+        balloon.style.setProperty('--size-w', sizeW + 'px');
+        balloon.style.setProperty('--size-h', sizeH + 'px');
+      }
+      
+      const c = color || (isGold ? 'gold' : isAngry ? '#d32f2f' : isBomb ? '#ff1744' : isFrozen ? '#81d4fa' : colors[Math.floor(Math.random() * colors.length)]);
       balloon.style.setProperty('--color', c);
-      const sizeOffsetX = isMini ? 12 : (isBomb ? 50 : 32);
-      const sizeOffsetY = isMini ? 15 : (isBomb ? 60 : 40);
+      const sizeOffsetX = isMini ? 12 : (isBomb ? 50 : sizeW / 2);
+      const sizeOffsetY = isMini ? 15 : (isBomb ? 60 : sizeH / 2);
       balloon.style.left = (x - sizeOffsetX) + 'px';
       balloon.style.top = (y - sizeOffsetY) + 'px';
 
       let exploded = false;
       let autoExplodeTimeout = null;
-      // 新增：变色气球的颜色切换定时器
       let rainbowTimer = null;
-      // 新增：反向气球的移动定时器
       let reverseMoveTimer = null;
+      // 新增：冰冻气球减速定时器
+      let frozenTimer = null;
 
-      // 新增：变色气球逻辑
+      // 变色气球逻辑
       if (isRainbow) {
         rainbowBalloons.add(balloon);
         rainbowTimer = setInterval(() => {
@@ -612,7 +962,7 @@
         }, 300);
       }
 
-      // 新增：反向气球逻辑（向上飘）
+      // 反向气球逻辑
       if (isReverse) {
         reverseBalloons.add(balloon);
         let currentY = y - sizeOffsetY;
@@ -622,10 +972,9 @@
             reverseBalloons.delete(balloon);
             return;
           }
-          currentY -= 1; // 向上移动
+          currentY -= 1;
           balloon.style.top = currentY + 'px';
           
-          // 移出屏幕后移除
           if (currentY < -100) {
             clearInterval(reverseMoveTimer);
             reverseBalloons.delete(balloon);
@@ -635,22 +984,43 @@
         }, 20);
       }
 
+      // 新增：冰冻气球逻辑（移动变慢）
+      if (isFrozen) {
+        frozenBalloons.add(balloon);
+        // 减慢漂浮动画
+        balloon.style.animationDuration = '6s';
+        
+        if (audioUnlocked) {
+          frozenSound.currentTime = 0;
+          frozenSound.play().catch(e => {});
+        }
+      }
+
       const handleClick = (e) => {
         e.stopPropagation();
         if (!exploded) {
+          // 新增：震动反馈
+          triggerVibration();
+          
           resetIdleTimer();
           exploded = true;
           
-          // 清除变色/反向气球的定时器
+          // 清除定时器
           if (rainbowTimer) clearInterval(rainbowTimer);
           if (reverseMoveTimer) clearInterval(reverseMoveTimer);
+          if (frozenTimer) clearInterval(frozenTimer);
           rainbowBalloons.delete(balloon);
           reverseBalloons.delete(balloon);
+          frozenBalloons.delete(balloon);
           
           if (autoExplodeTimeout) clearTimeout(autoExplodeTimeout);
           const now = Date.now();
           if (now - lastPopTime < COMBO_THRESHOLD) {
             combo++;
+            // 新增：8连击触发超神特效
+            if (combo === 8) {
+              showSuperComboEffect();
+            }
           } else {
             combo = 1;
           }
@@ -665,8 +1035,7 @@
           if (comboText) showComboText(x, y, comboText);
 
           if (isBomb) {
-            playPopSound(false, true); // 播放炸弹音效
-            // 炸掉所有普通气球
+            playPopSound(false, true);
             document.querySelectorAll('.balloon:not(.angry):not(.gold)').forEach(el => {
               if (el !== balloon && el.parentNode) {
                 const rect = el.getBoundingClientRect();
@@ -675,20 +1044,39 @@
                 popBalloon(el, cx, cy, getComputedStyle(el).getPropertyValue('--color').trim() || '#ff5252', false);
               }
             });
-            // 记录炸弹使用
             if (!usedBomb) {
               usedBomb = true;
               setTimeout(() => showAchievement('💣 Boom Master', '首次使用超级炸弹！'), 500);
             }
           }
-          popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow);
+          
+          // 新增：处理黏连气球
+          if (connectedBalloons.has(balloon)) {
+            const connectedPair = connectedBalloons.get(balloon);
+            const [otherBalloon, connector] = connectedPair;
+            // 爆炸另一个气球
+            if (otherBalloon && otherBalloon.parentNode && !otherBalloon.classList.contains('pop')) {
+              const rect = otherBalloon.getBoundingClientRect();
+              const cx = rect.left + rect.width / 2;
+              const cy = rect.top + rect.height / 2;
+              const color = getComputedStyle(otherBalloon).getPropertyValue('--color').trim() || '#ff5252';
+              popBalloon(otherBalloon, cx, cy, color, otherBalloon.classList.contains('gold'));
+            }
+            // 移除连线
+            if (connector && connector.parentNode) {
+              connector.remove();
+            }
+            connectedBalloons.delete(balloon);
+            connectedBalloons.delete(otherBalloon);
+          }
+          
+          popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow, isFrozen);
         }
       };
 
       balloon.addEventListener('click', handleClick);
       document.body.appendChild(balloon);
 
-      // 注册到活动气球集（用于暂停）
       activeBalloons.add(balloon);
 
       // 自动爆炸
@@ -696,16 +1084,18 @@
         autoExplodeTimeout = setTimeout(() => {
           if (!exploded && balloon.parentNode) {
             exploded = true;
-            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow);
+            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow, isFrozen);
           }
         }, autoExplodeDelay);
       } else if (autoMode && !isAngry && !isBomb) {
+        // 新增：冰冻气球自动爆炸延迟加倍
+        const delay = isFrozen ? 6000 : 3000;
         autoExplodeTimeout = setTimeout(() => {
           if (!exploded && balloon.parentNode) {
             exploded = true;
-            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow);
+            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow, isFrozen);
           }
-        }, 3000);
+        }, delay);
       }
 
       return {
@@ -713,18 +1103,40 @@
         explode: () => {
           if (!exploded) {
             exploded = true;
-            // 清除变色/反向气球的定时器
             if (rainbowTimer) clearInterval(rainbowTimer);
             if (reverseMoveTimer) clearInterval(reverseMoveTimer);
+            if (frozenTimer) clearInterval(frozenTimer);
             rainbowBalloons.delete(balloon);
             reverseBalloons.delete(balloon);
+            frozenBalloons.delete(balloon);
             
             if (autoExplodeTimeout) clearTimeout(autoExplodeTimeout);
-            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow);
+            popBalloon(balloon, x, y, c, isGold, isReverse, isRainbow, isFrozen);
           }
         },
         autoTimeout: autoExplodeTimeout
       };
+    }
+
+    // 新增：创建黏连气球对
+    function createConnectedBalloons(x, y) {
+      // 创建第一个气球
+      const balloon1Obj = createBalloon(x - 50, y);
+      const balloon1 = balloon1Obj.el;
+      
+      // 创建第二个气球
+      const balloon2Obj = createBalloon(x + 50, y);
+      const balloon2 = balloon2Obj.el;
+      
+      // 创建连线
+      const connector = createConnector(balloon1, balloon2);
+      
+      // 记录黏连关系
+      connectedBalloons.set(balloon1, [balloon2, connector]);
+      connectedBalloons.set(balloon2, [balloon1, connector]);
+      
+      // 显示成就
+      setTimeout(() => showAchievement('🔗 黏连气球', '捏爆一个，另一个也会爆！'), 500);
     }
 
     function playPopSound(isGold = false, isBomb = false) {
@@ -737,18 +1149,21 @@
       sound.play().catch(e => {});
     }
 
-    // 修改：增加反向/变色气球参数
-    function popBalloon(el, x, y, color, isGold = false, isReverse = false, isRainbow = false) {
+    // 修改：增加冰冻气球参数
+    function popBalloon(el, x, y, color, isGold = false, isReverse = false, isRainbow = false, isFrozen = false) {
       el.classList.add('pop');
       
-      // 新增：双倍分数逻辑
-      if (isDoubleScoreActive) {
-        popCount += 2; // 双倍分数
-      } else {
-        popCount++; // 正常分数
-      }
+      // 分数计算
+      let addScore = 1;
+      if (isDoubleScoreActive) addScore *= 2;
+      if (isFrozen) addScore *= 3; // 冰冻气球3倍分数
+      popCount += addScore;
       
       countEl.textContent = popCount;
+      // 新增：更新等级和最高分
+      updateLevel();
+      updateHighScore();
+      
       playPopSound(isGold);
 
       // 成就系统
@@ -757,12 +1172,15 @@
       } else if (popCount === 100) {
         showAchievement('🔥 气球终结者', '你已摧毁 100 个气球！');
       }
-      // 新增：特殊成就
       if (isReverse && !document.querySelector('.achievement')) {
         setTimeout(() => showAchievement('🌪️ 反重力大师', '捏爆了反向气球！'), 300);
       }
       if (isRainbow && !document.querySelector('.achievement')) {
         setTimeout(() => showAchievement('🌈 色彩收藏家', '捏爆了变色气球！'), 300);
+      }
+      // 新增：冰冻气球成就
+      if (isFrozen && !document.querySelector('.achievement')) {
+        setTimeout(() => showAchievement('❄️ 冰冻大师', '捏爆了冰冻气球，获得3倍分数！'), 300);
       }
 
       if (isGold) {
@@ -777,6 +1195,14 @@
         msg.innerHTML = '🎉 超级幸运！';
         document.body.appendChild(msg);
         setTimeout(() => msg.remove(), 2000);
+      }
+
+      // 新增：显示解压文字气泡
+      showPopText(x, y);
+      
+      // 新增：随机生成天气特效
+      if (Math.random() < 0.3) {
+        createWeatherEffect();
       }
 
       for (let i = 0; i < (isGold ? 40 : 30); i++) {
@@ -804,7 +1230,7 @@
 
         let posX = x;
         let posY = y;
-        const gravity = isReverse ? -0.15 : 0.15; // 反向气球粒子向上飞
+        const gravity = isReverse ? -0.15 : 0.15;
         let velY = vy;
 
         const animate = () => {
@@ -833,6 +1259,7 @@
         activeBalloons.delete(el);
         rainbowBalloons.delete(el);
         reverseBalloons.delete(el);
+        frozenBalloons.delete(el);
       }, 600);
     }
 
@@ -854,7 +1281,13 @@
       } else {
         balloonIndex++;
         const isGold = (balloonIndex % 10 === 0);
-        createBalloon(clientX, clientY, null, isGold);
+        
+        // 新增：15%概率生成黏连气球对
+        if (!isGold && Math.random() < 0.15) {
+          createConnectedBalloons(clientX, clientY);
+        } else {
+          createBalloon(clientX, clientY, null, isGold);
+        }
         
         // 每生成20个气球，有概率生成分数翻倍道具
         if (balloonIndex % 20 === 0 && Math.random() < 0.7) {
@@ -934,7 +1367,6 @@
           const x = Math.random() * window.innerWidth;
           const y = -50;
           const isGold = Math.random() < 0.1;
-          // 气球雨中也会包含反向/变色气球
           const balloon = createBalloon(x, y, null, isGold, false, false, 3000);
           let posY = y;
           const fall = () => {
@@ -964,7 +1396,6 @@
       pauseOverlay.style.display = isPaused ? 'flex' : 'none';
 
       if (isPaused) {
-        // 暂停所有气球动画
         document.querySelectorAll('.balloon').forEach(el => {
           el.style.animationPlayState = 'paused';
         });
@@ -1024,6 +1455,9 @@
     document.getElementById('easterEggBtn').addEventListener('click', () => {
       document.querySelectorAll('.balloon').forEach(el => el.remove());
       document.querySelectorAll('.double-score').forEach(el => el.remove());
+      document.querySelectorAll('.balloon-connector').forEach(el => el.remove());
+      connectedBalloons.clear();
+      
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
       const balloons = [];
@@ -1050,7 +1484,7 @@
       }, lovePattern.length * 80 + 400);
     });
 
-    // ===== 空闲检测 & 生气气球 =====
+    // 空闲检测 & 生气气球
     function resetIdleTimer() {
       if (idleTimer) clearTimeout(idleTimer);
       idleTimer = setTimeout(spawnAngryBalloon, 10000);
@@ -1092,6 +1526,15 @@
       }
     }, 20000);
 
+    // 新增：定时生成天气特效
+    setInterval(() => {
+      if (!isPaused && Math.random() < 0.5) {
+        createWeatherEffect();
+      }
+    }, 3000);
+
+    // 初始化等级
+    updateLevel();
     resetIdleTimer();
   </script>
 </body>
